@@ -3,54 +3,56 @@ var router = express.Router();
 const asyncHandler = require('../utilities/asyncHandler')
 const TwitterService = require('../Services/TwitterService')
 
-//importing error modules
-const { BadRequestError, AuthFailureError } = require('../utilities/ApiError');
-
-//importing error response classes
-const {
-    SuccessResponse,
-    TokenRefreshResponse,
-    CreatedResponse,
-} = require('../utilities/ApiResponse');
 
 /* GET home page. */
 router.get('/', asyncHandler(function(req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Twitter OAuth' });
 }));
 
-//facbook signup route
+//route to initiate login with twitter
 router.get(
     '/twitter',
     asyncHandler(async(req, res) => {
-        let url = await TwitterService.url()
-        res.redirect(url)
+        let url = await TwitterService.url();    
+        if(!url.error){
+            res.redirect(url.url);
+        }else{
+            return res.redirect('/error');
+        }
     })
 );
+
+
 //twitter authentication callback url
 router.get(
-    '/twittercallback',
-    asyncHandler(async(req, res) => {
+'/twittercallback',asyncHandler(async(req, res) => {
         if (req.query.error) throw new AuthFailureError()
             // get Access tokens and process user data
         let results = await TwitterService.getUserAccessTokens(req.query)
-        if (results)
+        if (!results.error){
             req.session.user = results.user
-        return res.redirect('/dashboard');
-
+            return res.redirect('/dashboard');
+        }else{
+            return res.redirect('/error');
+        }
     })
 );
 
+//user dashboard route
 router.get(
     '/dashboard',
     asyncHandler(async(req, res) => {
         const user = req.session.user
         if (user) {
             return res.render('dashboard', { user: user })
+        }else{
+            res.redirect('/error')
         }
-        res.redirect('/')
 
     })
 );
+
+//user logout route
 router.get(
     '/logout',
     asyncHandler(async(req, res) => {

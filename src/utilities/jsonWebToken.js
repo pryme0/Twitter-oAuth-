@@ -1,20 +1,9 @@
-/**
- * @file Creates and Verifies Json Web Tokens
- * @author JOSEPH <obochi2@gmail.com> <24/07/2020 09:15am>
- * @since 0.1.0
- * Last Modified: JOSEPH <obochi2@gmail.com> <16/09/2020 011:41pm>
- */
+
 
 const jwt = require('jsonwebtoken');
-const {
-    BadTokenError,
-    TokenExpiredError,
-    AccessTokenError,
-    BadRequestError,
-} = require('./apiError');
 
 const ALGORITHM = 'HS256';
-const ISSUER = 'buzzroom';
+const ISSUER = 'twitteroAuth';
 const AUDIENCE = ['user', 'newUser'];
 
 /**
@@ -23,7 +12,7 @@ const AUDIENCE = ['user', 'newUser'];
  */
 class JsonWebToken {
     constructor(payload) {
-        this.expiresIn = '15m';
+        this.expiresIn = '1H';
         this.algorithm = ALGORITHM;
         this.secret = process.env.JWT_SECRET_KEY;
         this.issuer = ISSUER;
@@ -118,17 +107,12 @@ class JsonWebToken {
                 };
                 next();
             } catch (e) {
-                if (e.name === 'TokenExpiredError') next(new TokenExpiredError());
-                if (e.message === 'jwt malformed') next(new BadTokenError());
-                next(new AccessTokenError());
+                if (e.name === 'TokenExpiredError') return res.status(401).json({error:'Token Expired'});
+                if (e.message === 'jwt malformed') return res.status(401).json({error:'Malformed token'})
+                return res.status(401).json({error:'Authorization error'})
             }
         } else {
-            next(
-                new BadRequestError(
-                    'No Token Provided',
-                    "Please send an Authorization Header with value - Bearer 'Token'"
-                )
-            );
+            return res.status(401).json({error:'Authorization not provided'});
         }
     }
 }
