@@ -22,7 +22,7 @@
         "mongoose": "^5.10.5",
         "morgan": "~1.9.1",
         "node-twitter-api": "^1.8.0",
-        "nodemon": "^2.0.4",
+        "nodemon": "^2.0.17",
         "oauth": "^0.9.15",
         "sendgrid": "^5.2.3"
     }
