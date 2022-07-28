@@ -19,7 +19,7 @@
         "http-errors": "~1.6.3",
         "jsonwebtoken": "^8.5.1",
         "lodash": "^4.17.20",
-        "mongoose": "^5.10.5",
+        "mongoose": "^6.4.6",
         "morgan": "~1.9.1",
         "node-twitter-api": "^1.8.0",
         "nodemon": "^2.0.4",
