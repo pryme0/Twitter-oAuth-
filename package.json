@@ -6,7 +6,7 @@
         "start": "nodemon ./src/bin/www"
     },
     "dependencies": {
-        "@sendgrid/mail": "^7.2.5",
+        "@sendgrid/mail": "^8.1.2",
         "bcrypt": "^5.0.0",
         "bcryptjs": "^2.4.3",
         "bunyan": "^1.8.14",
@@ -17,12 +17,12 @@
         "express": "~4.16.1",
         "express-session": "^1.17.1",
         "http-errors": "~1.6.3",
-        "jsonwebtoken": "^8.5.1",
+        "jsonwebtoken": "^9.0.2",
         "lodash": "^4.17.20",
-        "mongoose": "^5.10.5",
+        "mongoose": "^5.12.4",
         "morgan": "~1.9.1",
         "node-twitter-api": "^1.8.0",
-        "nodemon": "^2.0.4",
+        "nodemon": "^3.0.0",
         "oauth": "^0.9.15",
         "sendgrid": "^5.2.3"
     }
